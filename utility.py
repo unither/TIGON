@@ -276,7 +276,8 @@ def gcd_list(numbers):
     return gcd_value
 
 
-def train_model(mse,func,args,data_train,train_time,integral_time,sigma_now,options,device,itr):
+def train_model(mse,func,args,data_train,train_time,integral_time,sigma_now,
+                options,device,itr):
     warnings.filterwarnings("ignore")
 
     loss = 0
@@ -329,7 +330,8 @@ def train_model(mse,func,args,data_train,train_time,integral_time,sigma_now,opti
 
 
     if (itr >1):
-        if ((itr % 100 == 0) and (itr<=args.niters-400) and (sigma_now>0.02) and (L2_value1.mean()<=0.0003)):
+        if ((itr % 100 == 0) and (itr<=args.niters-400) and 
+            (sigma_now>0.02) and (L2_value1.mean()<=0.0003)):
             sigma_now = sigma_now/2
 
     return loss, loss1, sigma_now, L2_value1, L2_value2
