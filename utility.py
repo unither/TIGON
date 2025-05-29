@@ -227,6 +227,9 @@ def loaddata(args,device):
 
 
 def ggrowth(t,y,func,device):
+    """
+    func is the NN
+    """
     y_0 = torch.zeros(y[0].shape).type(torch.float32).to(device)
     y_00 = torch.zeros(y[1].shape).type(torch.float32).to(device)                       
     gg = func.forward(t, y)[1]
@@ -241,8 +244,21 @@ def trans_loss(t,y,func,device,odeint_setp):
     y_00 = torch.zeros(v.shape).type(torch.float32).to(device)
     g_growth = partial(ggrowth,func=func,device=device)
     if torch.is_nonzero(t):
-        _,_, exp_g = odeint(g_growth, (y_00,y_0,y_0), torch.tensor([0,t]).type(torch.float32).to(device),atol=1e-5,rtol=1e-5,method='midpoint',options = {'step_size': odeint_setp})
-        f_int = (torch.norm(v,dim=1)**2+torch.norm(g,dim=1)**2).unsqueeze(1)*torch.exp(exp_g[-1])
+        _,_, exp_g = odeint(g_growth, 
+                            (y_00,y_0,y_0), 
+                            torch.tensor([0,t])
+                                .type(torch.float32)
+                                .to(device),
+                            atol=1e-5,
+                            rtol=1e-5,
+                            method='midpoint',
+                            options = {'step_size': odeint_setp}
+                            )
+        # (|v|^2 + |g|^2) * e^{\int{g}}
+        # Equation 15 from the paper
+        f_int = (
+            torch.norm(v,dim=1)**2+torch.norm(g,dim=1)**2
+            ).unsqueeze(1)*torch.exp(exp_g[-1])
         return (y_00,y_0,f_int)
     else:
         return (y_00,y_0,y_0)
