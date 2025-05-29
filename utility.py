@@ -18,6 +18,11 @@ from mpl_toolkits.mplot3d import proj3d
 import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
+from pathlib import Path
+
+# print(Path(__file__).parent.resolve())
+
+HERE_PATH = Path(__file__).parent.resolve()
 
 class Args:
     pass
@@ -34,8 +39,8 @@ def create_args():
     args.n_hiddens = int(input("Number of hidden layers (default: 4): ") or 4)
     args.activation = input("Activation function (default: Tanh): ") or 'Tanh'
     args.gpu = int(input("GPU device index (default: 0): ") or 0)
-    args.input_dir = input("Input Files Directory (default: Input/): ") or 'Input/'
-    args.save_dir = input("Output Files Directory (default: Output/): ") or 'Output/'
+    args.input_dir = input("Input Files Directory (default: Input/): ") or HERE_PATH / 'Input'
+    args.save_dir = input("Output Files Directory (default: Output/): ") or HERE_PATH / 'Output'
     args.seed = int(input("Random seed (default: 1): ") or 1)
     return args
 
