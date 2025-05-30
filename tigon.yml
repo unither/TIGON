@@ -1,0 +1,17 @@
+name: tigon
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - scipy==1.10.1
+  - python
+  - torchdiffeq
+  - pytorch==1.13.1
+  - ipykernel
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - leidenalg
+  - scanpy
+  - python-igraph
+prefix: C:\Users\jferrarigian\AppData\Local\miniconda3\envs\tigon
